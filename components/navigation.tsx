@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Menu, X } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -40,12 +39,10 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
-            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Controls */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>

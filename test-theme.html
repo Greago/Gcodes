@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Test</title>
+    <style>
+        :root {
+            --background: oklch(0.985 0.002 106);
+            --foreground: oklch(0.15 0.015 250);
+            --card: oklch(0.95 0.003 220);
+            --card-foreground: oklch(0.15 0.015 250);
+            --primary: oklch(0.65 0.18 190);
+            --primary-foreground: oklch(0.985 0.002 106);
+            --secondary: oklch(0.92 0.008 220);
+            --secondary-foreground: oklch(0.15 0.015 250);
+            --muted: oklch(0.92 0.008 220);
+            --muted-foreground: oklch(0.45 0.01 220);
+            --border: oklch(0.85 0.012 220);
+        }
+
+        .dark {
+            --background: oklch(0.13 0.01 260);
+            --foreground: oklch(0.95 0 0);
+            --card: oklch(0.16 0.01 260);
+            --card-foreground: oklch(0.95 0 0);
+            --primary: oklch(0.75 0.15 180);
+            --primary-foreground: oklch(0.13 0.01 260);
+            --secondary: oklch(0.22 0.01 260);
+            --secondary-foreground: oklch(0.95 0 0);
+            --muted: oklch(0.22 0.01 260);
+            --muted-foreground: oklch(0.65 0 0);
+            --border: oklch(0.28 0.01 260);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            background-color: var(--card);
+            color: var(--card-foreground);
+            border: 1px solid var(--border);
+            border-radius: 0.625rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+
+        .secondary {
+            background-color: var(--secondary);
+            color: var(--secondary-foreground);
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+
+        .muted {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle primary" onclick="toggleTheme()">Toggle Theme</button>
+    
+    <h1>Light Mode Test</h1>
+    <p class="muted">This page demonstrates the light mode color scheme.</p>
+    
+    <div class="card">
+        <h2>Card Component</h2>
+        <p>This card uses the semantic color tokens that work in both light and dark modes.</p>
+        <button class="primary">Primary Button</button>
+        <button class="secondary">Secondary Button</button>
+    </div>
+
+    <div class="card">
+        <h2>Color Variables</h2>
+        <p><strong>Background:</strong> <span id="bg-color"></span></p>
+        <p><strong>Foreground:</strong> <span id="fg-color"></span></p>
+        <p><strong>Primary:</strong> <span id="primary-color"></span></p>
+        <p><strong>Secondary:</strong> <span id="secondary-color"></span></p>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            updateColorDisplay();
+        }
+
+        function updateColorDisplay() {
+            const style = getComputedStyle(document.documentElement);
+            document.getElementById('bg-color').textContent = style.getPropertyValue('--background').trim();
+            document.getElementById('fg-color').textContent = style.getPropertyValue('--foreground').trim();
+            document.getElementById('primary-color').textContent = style.getPropertyValue('--primary').trim();
+            document.getElementById('secondary-color').textContent = style.getPropertyValue('--secondary').trim();
+        }
+
+        // Initialize
+        updateColorDisplay();
+        
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+            updateColorDisplay();
+        }
+    </script>
+</body>
+</html>

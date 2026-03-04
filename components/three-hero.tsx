@@ -3,10 +3,12 @@
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Float, MeshDistortMaterial } from "@react-three/drei"
 import { useRef, useMemo } from "react"
+import { useTheme } from "next-themes"
 import type * as THREE from "three"
 
 function AnimatedSphere() {
   const meshRef = useRef<THREE.Mesh>(null)
+  const { theme } = useTheme()
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -15,12 +17,14 @@ function AnimatedSphere() {
     }
   })
 
+  const sphereColor = theme === "dark" ? "#4fd1c5" : "#0e7490"
+
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
       <mesh ref={meshRef} scale={1.8}>
         <icosahedronGeometry args={[1, 4]} />
         <MeshDistortMaterial
-          color="#4fd1c5"
+          color={sphereColor}
           attach="material"
           distort={0.4}
           speed={2}
@@ -64,8 +68,8 @@ function ParticleField() {
   return (
     <points ref={particlesRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial size={0.03} vertexColors transparent opacity={0.6} />
     </points>
@@ -74,6 +78,7 @@ function ParticleField() {
 
 function FloatingRings() {
   const ringRef = useRef<THREE.Group>(null)
+  const { theme } = useTheme()
 
   useFrame((state) => {
     if (ringRef.current) {
@@ -82,14 +87,16 @@ function FloatingRings() {
     }
   })
 
+  const ringColor = theme === "dark" ? "#4fd1c5" : "#0e7490"
+
   return (
     <group ref={ringRef}>
       {[0, 1, 2].map((i) => (
         <mesh key={i} rotation={[Math.PI / 2, 0, i * (Math.PI / 3)]}>
           <torusGeometry args={[2.5 + i * 0.3, 0.02, 16, 100]} />
           <meshStandardMaterial
-            color="#4fd1c5"
-            emissive="#4fd1c5"
+            color={ringColor}
+            emissive={ringColor}
             emissiveIntensity={0.3}
             transparent
             opacity={0.5 - i * 0.1}
@@ -101,11 +108,13 @@ function FloatingRings() {
 }
 
 export function ThreeHero() {
+  const { theme } = useTheme()
+
   return (
     <div className="absolute inset-0 z-0">
       <Canvas camera={{ position: [0, 0, 6], fov: 60 }}>
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#4fd1c5" />
+        <ambientLight intensity={theme === "dark" ? 0.3 : 0.6} />
+        <pointLight position={[10, 10, 10]} intensity={1} color={theme === "dark" ? "#4fd1c5" : "#0e7490"} />
         <pointLight position={[-10, -10, -10]} intensity={0.5} color="#818cf8" />
         <AnimatedSphere />
         <FloatingRings />

@@ -4,7 +4,6 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { LayoutDashboard, FileText, Mail, UserIcon, LogOut, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { useState } from "react"
 import { initialContactMessages } from "@/lib/data"
 
@@ -90,11 +89,7 @@ export function DashboardSidebar({ activeTab, onTabChange, onLogout }: Dashboard
         </nav>
 
         {/* Bottom Actions */}
-        <div className="p-3 border-t border-border space-y-2">
-          <div className={cn("flex items-center", collapsed ? "justify-center" : "justify-between px-3")}>
-            {!collapsed && <span className="text-sm text-muted-foreground">Theme</span>}
-            <ThemeToggle />
-          </div>
+        <div className="p-3 border-t border-border">
           <Button
             variant="ghost"
             onClick={onLogout}
